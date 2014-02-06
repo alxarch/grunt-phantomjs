@@ -1,0 +1,37 @@
+{
+  "name": "grunt-phantomjs",
+  "version": "0.0.1",
+  "description": "Grunt automation using phantomjs.",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alxarch/grunt-phantomjs.git"
+  },
+  "keywords": [
+    "gruntplugin",
+    "phantomjs"
+  ],
+  "author": "Alexandros Sigalas <alxarch@gmail.com>",
+  "license": "Apache v2",
+  "bugs": {
+    "url": "https://github.com/alxarch/grunt-phantomjs/issues"
+  },
+  "homepage": "https://github.com/alxarch/grunt-phantomjs",
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  },
+  "dependencies": {
+    "async": "~0.2.10",
+    "phantomjs": "~1.9.7-1",
+    "node-ish": "0.0.2",
+    "optimist": "~0.6.0",
+    "lodash": "~2.4.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.8.0"
+  }
+}
