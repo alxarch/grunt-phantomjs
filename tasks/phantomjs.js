@@ -1,46 +1,22 @@
-var phantomjs = require("phantomjs").path;
-var spawn = require("child_process").spawn;
-var path = require("path");
+var _ = require("lodash");
 var async = require("async");
-var arrayify = require("../lib/utils").arrayify; 
-var ident = require("../lib/utils").ident; 
-
-var script = path.resolve(__dirname, '../lib/task.js');
+var phantomtask = require("phantomtask");
 
 module.exports = function (grunt) {
 	grunt.registerMultiTask("phantomjs", "Run tasks on phantomjs.", function () {
-		var done = this.async();
-		var o = this.options({});
-		var inject = arrayify(o.inject);
 		var jobs = [];
-		var options = [
-			o.images ? '--load-images=' + !!o.images : null,
-			o.cookies ? '--cookies-file=' + o.cookies : null,
-			o.cache ? '--disk-cache=' + !!o.cache : null
-		].filter(ident);
+
+		var done = this.async();
+		var options = this.options({});
 
 		this.files.forEach(function (file) {
-			[].concat(file.src).map(function (f) {
+			var opt = _.extend({output: file.dest}, options);
+			[].concat(file.src).forEach(function (src) {
 				jobs.push(function (callback) {
-					var args = [].concat(options, script, f);
-					inject.forEach( function (i) {
-						args.push("-i");
-						args.push(i);
-					});
-					var p = spawn(phantomjs, args);
-					p.stdout.pipe(process.stdout);
-					p.stderr.pipe(process.stderr);
-					p.on("exit", function (code) {
-						var error;
-						if (code !== 0) {
-							error = new Error("Phantomjs exited with code: " + code); 
-						}
-						callback(error);
-					});
-				});		
+					phantomtask(src, opt, callback);
+				});
 			});
 		});
-
-		async[o.parallel ? 'parallel' : 'series'](jobs, done);
+		async.parallel(jobs, done);
 	});
 };
